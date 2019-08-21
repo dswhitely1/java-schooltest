@@ -36,4 +36,5 @@ public class CourseController
         courseService.delete(courseid);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }

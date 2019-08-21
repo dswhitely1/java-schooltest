@@ -1,52 +1,74 @@
 package com.lambdaschool.school.service;
 
 import com.lambdaschool.school.SchoolApplication;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.jupiter.api.Assertions.*;
+import javax.persistence.EntityNotFoundException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SchoolApplication.class)
-class CourseServiceImplTest
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class CourseServiceImplTest
 {
     @Autowired
     private CourseService courseService;
-    @BeforeEach
-    void setUp()
+
+    @Before
+    public void AsetUp()
     {
         MockitoAnnotations.initMocks(this);
     }
 
-    @AfterEach
-    void tearDown()
+    @After
+    public void BtearDown()
     {
     }
 
     @Test
-    void findAll()
+    public void CfindAll()
     {
     }
 
     @Test
-    void getCountStudentsInCourse()
+    public void DgetCountStudentsInCourse()
     {
     }
 
     @Test
-    void delete()
+    public void Edelete()
     {
     }
 
     @Test
-    void findCourseById()
+    public void FfindCourseById()
     {
-        assertEquals("Java Back End", courseService.findCourseById(4).getCoursename());
+        assertEquals("Java Back End", courseService.findCourseById(4)
+                .getCoursename());
+    }
+
+    @Test(expected = EntityNotFoundException.class)
+    public void GdeleteNotFound()
+    {
+        courseService.delete(100);
+        assertEquals(6, courseService.findAll()
+                .size());
+    }
+
+    @Test
+    public void HdeleteFound()
+    {
+        courseService.delete(4);
+        assertEquals(5, courseService.findAll().size());
     }
 }

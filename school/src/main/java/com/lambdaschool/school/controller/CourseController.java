@@ -38,10 +38,10 @@ public class CourseController
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping(value = "/course/add", consumes = {"applicaton/json"}, produces = {"application/json"})
-    public ResponseEntity<?> addNewCourse(@Valid @RequestBody Course course)
+    @PostMapping(value = "/course/add", consumes = {"application/json"}, produces = {"application/json"})
+    public ResponseEntity<?> addNewCourse(@Valid @RequestBody Course newCourse)
     {
-        Course newCourse = courseService.save(course);
+        newCourse = courseService.save(newCourse);
         return new ResponseEntity<>(newCourse, HttpStatus.CREATED);
     }
 

@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 
+@Transactional
 @Service(value = "courseService")
 public class CourseServiceImpl implements CourseService
 {

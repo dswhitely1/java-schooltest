@@ -79,7 +79,7 @@ public class CourseServiceImplTest
     @Test
     public void Isave()
     {
-        Instructor instructor = courseService.findCourseById(1).getInstructor();
+        Instructor instructor = courseService.findCourseById(1L).getInstructor();
         Course course = new Course("Observatory", instructor);
         Course newCourse = courseService.save(course);
 

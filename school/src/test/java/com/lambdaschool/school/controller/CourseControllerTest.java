@@ -19,11 +19,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(value = CourseController.class,
@@ -120,11 +122,15 @@ public class CourseControllerTest
     public void listAllCourses() throws Exception
     {
         String apiUrl = "/courses/courses";
-        Mockito.when(courseService.findAll()).thenReturn(courseList);
+        Mockito.when(courseService.findAll())
+                .thenReturn(courseList);
 
-        RequestBuilder rb = MockMvcRequestBuilders.get(apiUrl).accept(MediaType.APPLICATION_JSON);
-        MvcResult r = mockMvc.perform(rb).andReturn();
-        String tr = r.getResponse().getContentAsString();
+        RequestBuilder rb = MockMvcRequestBuilders.get(apiUrl)
+                .accept(MediaType.APPLICATION_JSON);
+        MvcResult r = mockMvc.perform(rb)
+                .andReturn();
+        String tr = r.getResponse()
+                .getContentAsString();
 
         ObjectMapper mapper = new ObjectMapper();
         String er = mapper.writeValueAsString(courseList);
@@ -139,5 +145,29 @@ public class CourseControllerTest
     @Test
     public void deleteCourseById()
     {
+    }
+
+    @Test
+    public void addNewStudent() throws Exception
+    {
+        String apiUrl = "/courses/course/add";
+        Instructor i4 = new Instructor();
+        Course c7 = new Course("Lambda Times", i4);
+        c7.setCourseid(7);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String courseString = mapper.writeValueAsString(c7);
+
+        Mockito.when(courseService.save(any(Course.class)))
+                .thenReturn(c7);
+
+        RequestBuilder rb = MockMvcRequestBuilders.post(apiUrl)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(courseString);
+        mockMvc.perform(rb)
+                .andExpect(status().isCreated())
+                .andDo(MockMvcResultHandlers.print());
+
     }
 }
